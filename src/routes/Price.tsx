@@ -6,13 +6,6 @@ interface PriceProps {
   tickersData: PriceData;
 }
 
-const PriceBox = styled.div`
-  /* border-bottom: 1px dashed black; */
-  padding: 10px;
-`;
-
-const PriceSpan = styled.span``;
-
 export default function Price() {
   const { tickersData } = useOutletContext<PriceProps>();
 
@@ -79,3 +72,10 @@ export default function Price() {
     </>
   );
 }
+
+const PriceBox = styled.div`
+  /* border-bottom: 1px dashed black; */
+  padding: 10px;
+`;
+
+const PriceSpan = styled.span``;
