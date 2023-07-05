@@ -154,7 +154,7 @@ function Coin() {
     ["tickers", coinId],
     () => fetchCoinTickers(coinId as string),
     {
-      refetchInterval: 5000,
+      // refetchInterval: 5000,
     }
   );
 

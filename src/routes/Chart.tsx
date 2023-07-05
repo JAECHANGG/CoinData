@@ -20,6 +20,11 @@ interface ChartProps {
   coinId: string;
 }
 
+interface IFilterHistoryData {
+  x: Date;
+  y: number[];
+}
+
 export default function Chart() {
   // 하위 컴포넌트에서 useOutletContext()훅을 이용해서 props를 받아올 수 있다.
   const { coinId } = useOutletContext<ChartProps>();
@@ -29,7 +34,7 @@ export default function Chart() {
     ["ohlcv", coinId],
     () => fetchCoinHistory(coinId),
     {
-      refetchInterval: 5000,
+      // refetchInterval: 5000,
     }
   );
 
@@ -43,11 +48,14 @@ export default function Chart() {
         "Loading chart..."
       ) : (
         <ApexChart
-          type="line"
+          type="candlestick"
           series={[
             {
               name: "Price",
-              data: data?.map((price) => price.close) as number[],
+              data: data?.map((price) => ({
+                x: new Date(price.time_close),
+                y: [price.open, price.high, price.low, price.close],
+              })) as IFilterHistoryData[],
             },
           ]}
           options={{
@@ -55,48 +63,20 @@ export default function Chart() {
               mode: isDark ? "dark" : "light",
             },
             chart: {
-              height: 300,
+              height: 400,
               width: 500,
               toolbar: {
                 show: false,
               },
               background: "transparent",
             },
-            grid: { show: false },
-            stroke: {
-              curve: "smooth",
-              width: 4,
-            },
-            yaxis: {
-              show: false,
-            },
             xaxis: {
-              axisBorder: { show: false },
-              axisTicks: { show: false },
-              labels: { show: false },
               // type: "datetime"이 categories에서 각각 뿌려주는 날짜를 day / Month 형식으로 나타내준다.
               type: "datetime",
-              categories: data?.map((price) => price.time_close) as string[],
-            },
-            fill: {
-              type: "gradient",
-              gradient: { gradientToColors: ["#0be881"], stops: [0, 100] },
-            },
-            colors: ["#0fbcf9"],
-            // tooltip>y>formatter => y축에 표시되는 값을 수정해줄 수 있다.
-            tooltip: {
-              y: {
-                formatter: (value) => `$ ${value.toFixed(2)}`,
-              },
             },
           }}
         />
       )}
-      <button
-        onClick={() => {
-          console.log(coinId);
-        }}
-      ></button>
     </div>
   );
 }
