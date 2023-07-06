@@ -4,6 +4,7 @@ import ApexChart from "react-apexcharts";
 import { useRecoilValue } from "recoil";
 import { isDarkAtom } from "../atoms";
 import { useOutletContext } from "react-router-dom";
+import styled from "styled-components";
 
 interface IHistoryData {
   time_open: string;
@@ -16,13 +17,13 @@ interface IHistoryData {
   market_cap: number;
 }
 
-interface ChartProps {
-  coinId: string;
-}
-
 interface IFilterHistoryData {
   x: Date;
   y: number[];
+}
+
+interface ChartProps {
+  coinId: string;
 }
 
 export default function Chart() {

@@ -1,25 +1,54 @@
+import axios from "axios";
+
 const BASE_URL = `https://api.coinpaprika.com/v1`;
 
-export function fetchCoins() {
-  return fetch(`${BASE_URL}/coins`).then((response) => response.json());
+export async function fetchCoins() {
+  const { data } = await axios.get(`${BASE_URL}/coins`);
+  try {
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
 }
 
-export function fetchCoinInfo(coinId: string) {
-  return fetch(`${BASE_URL}/coins/${coinId}`).then((response) =>
-    response.json()
-  );
+export async function fetchCoinInfo(coinId: string) {
+  const { data } = await axios.get(`${BASE_URL}/coins/${coinId}`);
+  try {
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
 }
 
-export function fetchCoinTickers(coinId: string) {
-  return fetch(`${BASE_URL}/tickers/${coinId}`).then((response) =>
-    response.json()
-  );
+export async function fetchCoinTickers(coinId: string) {
+  const { data } = await axios.get(`${BASE_URL}/tickers/${coinId}`);
+  try {
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
 }
 
-export function fetchCoinHistory(coinId: string) {
-  const endDate = Math.floor(Date.now() / 1000);
-  const startDate = endDate - 60 * 60 * 24 * 7;
-  return fetch(
+export async function fetchCoinHistory(coinId: string) {
+  const { data } = await axios.get(
     `https://ohlcv-api.nomadcoders.workers.dev/?coinId=${coinId}`
-  ).then((respons) => respons.json());
+  );
+  try {
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export async function fetchPriceHistory(coinId: string) {
+  const endDate = Math.floor(Date.now() / 1000);
+  const startDate = endDate - 60 * 60 * 24 * 364;
+  const { data } = await axios.get(
+    `${BASE_URL}/tickers/${coinId}/historical?start=${startDate}&interval=1d`
+  );
+  try {
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
 }
