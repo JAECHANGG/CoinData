@@ -1,16 +1,11 @@
 import { useQuery } from "react-query";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { fetchPriceHistory } from "../api";
-import { PriceData } from "./Coin";
 import ApexChart from "react-apexcharts";
 import { useRecoilValue } from "recoil";
 import { isDarkAtom } from "../atoms";
-import { useState } from "react";
-
-interface PriceProps {
-  tickersData: PriceData;
-}
+import { useEffect, useState } from "react";
 
 interface ITickerPriceData {
   market_cap: number;
@@ -20,10 +15,9 @@ interface ITickerPriceData {
 }
 
 export default function Price() {
-  const [selection, setSelection] = useState("one_year");
+  const [selection, setSelection] = useState("one_month");
   const { coinId } = useParams();
   const isDark = useRecoilValue(isDarkAtom);
-  const { tickersData } = useOutletContext<PriceProps>();
 
   const { isLoading, data } = useQuery<ITickerPriceData[]>(
     ["price", coinId],
@@ -31,14 +25,16 @@ export default function Price() {
   );
 
   const upDateSelection = (timeline: string) => {
-    setSelection(timeline);
+    setSelection((_) => timeline);
+  };
 
+  const upDateApexChart = (timeline: string) => {
     switch (timeline) {
       case "one_weekend":
         ApexCharts.exec(
           "area-datetime",
           "zoomX",
-          new Date().getTime() - 60 * 60 * 7 * 24 * 1000,
+          new Date().getTime() - 60 * 60 * 24 * 7 * 1000,
           new Date().getTime()
         );
         break;
@@ -66,43 +62,50 @@ export default function Price() {
           new Date().getTime()
         );
         break;
-      // default:
+      default:
     }
   };
+
+  useEffect(() => {
+    // selection이 useState라서 비동기 작동을 하여 동기처리를 위한 useEffect를 사용함
+    upDateApexChart(selection);
+  }, [selection]);
 
   return (
     <>
       {isLoading ? (
-        "Loading chart..."
+        "Loading Price..."
       ) : (
         <div>
-          <button
-            onClick={() => upDateSelection("one_weekend")}
-            className={selection === "one_weekend" ? "active" : ""}
-          >
-            1W
-          </button>
-          &nbsp;
-          <button
-            onClick={() => upDateSelection("one_month")}
-            className={selection === "one_month" ? "active" : ""}
-          >
-            1M
-          </button>
-          &nbsp;
-          <button
-            onClick={() => upDateSelection("six_months")}
-            className={selection === "six_months" ? "active" : ""}
-          >
-            6M
-          </button>
-          &nbsp;
-          <button
-            onClick={() => upDateSelection("one_year")}
-            className={selection === "one_year" ? "active" : ""}
-          >
-            1Y
-          </button>
+          <div className="toolbar">
+            <button
+              onClick={() => upDateSelection("one_weekend")}
+              className={selection === "one_weekend" ? "active" : ""}
+            >
+              1W
+            </button>
+            &nbsp;
+            <button
+              onClick={() => upDateSelection("one_month")}
+              className={selection === "one_month" ? "active" : ""}
+            >
+              1M
+            </button>
+            &nbsp;
+            <button
+              onClick={() => upDateSelection("six_months")}
+              className={selection === "six_months" ? "active" : ""}
+            >
+              6M
+            </button>
+            &nbsp;
+            <button
+              onClick={() => upDateSelection("one_year")}
+              className={selection === "one_year" ? "active" : ""}
+            >
+              1Y
+            </button>
+          </div>
           <ApexChart
             type="area"
             series={[
