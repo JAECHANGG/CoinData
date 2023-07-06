@@ -5,7 +5,8 @@ import { fetchPriceHistory } from "../api";
 import ApexChart from "react-apexcharts";
 import { useRecoilValue } from "recoil";
 import { isDarkAtom } from "../atoms";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useDidMountEffect from "../hooks/useDidMountEffect";
 
 interface ITickerPriceData {
   market_cap: number;
@@ -15,7 +16,7 @@ interface ITickerPriceData {
 }
 
 export default function Price() {
-  const [selection, setSelection] = useState("one_month");
+  const [selection, setSelection] = useState("one_year");
   const { coinId } = useParams();
   const isDark = useRecoilValue(isDarkAtom);
 
@@ -66,7 +67,7 @@ export default function Price() {
     }
   };
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     // selection이 useState라서 비동기 작동을 하여 동기처리를 위한 useEffect를 사용함
     upDateApexChart(selection);
   }, [selection]);
