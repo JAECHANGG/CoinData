@@ -69,6 +69,7 @@ export default function Price() {
 
   useDidMountEffect(() => {
     // selection이 useState라서 비동기 작동을 하여 동기처리를 위한 useEffect를 사용함
+    // useEffect 사용시 최초렌더링 시 그래프가 그려지기 전에 ApexCharts.exec() 실행이 먼저되어 useDidMountEffect() 훅 사용
     upDateApexChart(selection);
   }, [selection]);
 
