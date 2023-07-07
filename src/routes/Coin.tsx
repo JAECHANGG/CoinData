@@ -71,8 +71,8 @@ function Coin() {
 
   // v6부터 useRouterMatch => useMatch
   // useMatch()의 인자로 url을 넘기면 해당 url과 일치할 경우 url의 정보를 반환하고, 일치하지 않을 경우 null을 반환한다.
-  const chartMatch = useMatch("/:coinId/chart");
-  const priceMatch = useMatch("/:coinId/price");
+  const chartMatch = useMatch("/CoinData/:coinId/chart");
+  const priceMatch = useMatch("/CoinData/:coinId/price");
 
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
     ["info", coinId],
@@ -133,10 +133,10 @@ function Coin() {
 
           <Tabs>
             <Tab isActive={chartMatch !== null}>
-              <Link to={`/${coinId}/chart`}>Chart</Link>
+              <Link to={`/CoinData/${coinId}/chart`}>Chart</Link>
             </Tab>
             <Tab isActive={priceMatch !== null}>
-              <Link to={`/${coinId}/price`}>Price</Link>
+              <Link to={`/CoinData/${coinId}/price`}>Price</Link>
             </Tab>
           </Tabs>
 

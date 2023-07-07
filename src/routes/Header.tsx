@@ -14,7 +14,7 @@ function Header() {
     <>
       <Wrap>
         {coinId && (
-          <IsHomeBtn onClick={() => navigate("/")}>
+          <IsHomeBtn onClick={() => navigate("/CoinData")}>
             <CiHome fontSize={30} />
           </IsHomeBtn>
         )}
