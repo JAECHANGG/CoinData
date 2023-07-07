@@ -10,9 +10,8 @@ function Router() {
     <BrowserRouter>
       <Routes>
         <Route element={<Header />}>
-          <Route path="/" element={<Coins />} />
           <Route path="/CoinData" element={<Coins />} />
-          <Route path="/:coinId" element={<Coin />}>
+          <Route path="/CoinData/:coinId" element={<Coin />}>
             <Route path="chart" element={<Chart />} />
             <Route path="price" element={<Price />} />
           </Route>
