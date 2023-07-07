@@ -6,7 +6,7 @@ export default function CoinTable({ data }: { data: ICoin[] | undefined }) {
   const navigate = useNavigate();
 
   const detailPageNavigate = (coinId: string, coinName: string) => {
-    navigate(`/CoinData/${coinId}`, { state: coinName });
+    navigate(`/${coinId}`, { state: coinName });
   };
   return (
     <TableFill>
